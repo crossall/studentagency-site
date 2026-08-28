@@ -40,14 +40,28 @@
     });
   }
 
-  document.querySelectorAll(".reveal").forEach((element) => {
-    element.classList.add("is-visible");
-  });
+  const revealElements = Array.from(document.querySelectorAll(".reveal"));
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => element.classList.add("is-visible"));
+  } else {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.1 },
+    );
+    revealElements.forEach((element) => revealObserver.observe(element));
+  }
 
   const heroVideo = document.querySelector(".hero-video");
   const heroVideoToggle = document.querySelector(".hero-video-toggle");
   const heroReelIndex = document.querySelector(".hero-reel-index");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const firstHeroSource = heroVideo?.querySelector("source")?.src;
   const heroPlaylist = firstHeroSource
     ? [
