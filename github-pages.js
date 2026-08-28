@@ -46,26 +46,54 @@
 
   const heroVideo = document.querySelector(".hero-video");
   const heroVideoToggle = document.querySelector(".hero-video-toggle");
+  const heroReelIndex = document.querySelector(".hero-reel-index");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const firstHeroSource = heroVideo?.querySelector("source")?.src;
+  const heroPlaylist = firstHeroSource
+    ? [
+        firstHeroSource,
+        new URL("hero-agency-dialogue.mp4", firstHeroSource).href,
+        new URL("hero-agency-reflection.mp4", firstHeroSource).href,
+      ]
+    : [];
+  let heroClipIndex = 0;
+  let heroPlayRequested = true;
 
   function syncHeroVideoLabel() {
     if (!heroVideo || !heroVideoToggle) return;
     heroVideoToggle.textContent = heroVideo.paused ? "영상 재생하기" : "영상 멈추기";
+    if (heroReelIndex) {
+      heroReelIndex.textContent = String(heroClipIndex + 1).padStart(2, "0") + " / 03";
+    }
   }
 
   function applyHeroMotionPreference() {
     if (!heroVideo) return;
     if (reducedMotion.matches) heroVideo.pause();
-    else heroVideo.play().catch(syncHeroVideoLabel);
+    else if (heroPlayRequested) heroVideo.play().catch(syncHeroVideoLabel);
     syncHeroVideoLabel();
   }
 
   if (heroVideo && heroVideoToggle) {
     heroVideo.addEventListener("play", syncHeroVideoLabel);
     heroVideo.addEventListener("pause", syncHeroVideoLabel);
+    heroVideo.addEventListener("ended", () => {
+      heroClipIndex = (heroClipIndex + 1) % heroPlaylist.length;
+      heroVideo.src = heroPlaylist[heroClipIndex];
+      heroVideo.load();
+      if (!reducedMotion.matches && heroPlayRequested) {
+        heroVideo.play().catch(syncHeroVideoLabel);
+      }
+      syncHeroVideoLabel();
+    });
     heroVideoToggle.addEventListener("click", () => {
-      if (heroVideo.paused) heroVideo.play().catch(syncHeroVideoLabel);
-      else heroVideo.pause();
+      if (heroVideo.paused) {
+        heroPlayRequested = true;
+        heroVideo.play().catch(syncHeroVideoLabel);
+      } else {
+        heroPlayRequested = false;
+        heroVideo.pause();
+      }
     });
     reducedMotion.addEventListener("change", applyHeroMotionPreference);
     applyHeroMotionPreference();
@@ -88,6 +116,69 @@
       const current = selectedLabel ? linkTrack === track : !linkTrack;
       if (current) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
+    });
+  }
+
+  const agencyCheckForm = document.querySelector("[data-agency-check-form]");
+  const agencyCheckResult = document.querySelector("[data-agency-check-result]");
+  const agencyCheckStatus = document.querySelector("[data-agency-check-status]");
+
+  function agencyInterpretation(score) {
+    if (score <= 2) return "먼저 해당 장면이 실제로 나타나는지 관찰합니다.";
+    if (score <= 5) return "나타난 장면이 반복되는 조건을 짧게 기록합니다.";
+    return "현재 조건이 다른 수업에서도 유지되는지 검토합니다.";
+  }
+
+  if (agencyCheckForm && agencyCheckResult && agencyCheckStatus) {
+    agencyCheckForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const questions = [...agencyCheckForm.querySelectorAll("[data-agency-question]")];
+      const unanswered = questions.find((question) => !question.querySelector("input:checked"));
+      if (unanswered) {
+        agencyCheckResult.hidden = true;
+        agencyCheckStatus.textContent = "모든 문항에 응답하면 관찰할 지점을 정리합니다.";
+        unanswered.querySelector("input")?.focus();
+        return;
+      }
+
+      const scores = { student: 0, teacher: 0, co: 0 };
+      questions.forEach((question) => {
+        const track = question.dataset.track;
+        const value = Number(question.querySelector("input:checked")?.value ?? 0);
+        scores[track] += value;
+      });
+
+      Object.entries(scores).forEach(([track, score]) => {
+        const scoreElement = agencyCheckResult.querySelector('[data-result-score="' + track + '"]');
+        const barElement = agencyCheckResult.querySelector('[data-result-bar="' + track + '"]');
+        const copyElement = agencyCheckResult.querySelector('[data-result-copy="' + track + '"]');
+        if (scoreElement) scoreElement.textContent = String(score);
+        if (barElement) barElement.style.width = ((score / 8) * 100) + "%";
+        if (copyElement) copyElement.textContent = agencyInterpretation(score);
+      });
+
+      const minimum = Math.min(scores.student, scores.teacher, scores.co);
+      const lowest = Object.keys(scores).filter((track) => scores[track] === minimum);
+      let nextObservation = "두 영역 이상이 비슷하게 나타납니다. 가장 최근 수업 장면부터 하나를 골라 반복 여부를 기록합니다.";
+      if (lowest.length === 1 && lowest[0] === "student") {
+        nextObservation = "다음 관찰에서는 학생이 목표를 다시 말하고 계획을 바꾸는 순간을 기록합니다.";
+      } else if (lowest.length === 1 && lowest[0] === "teacher") {
+        nextObservation = "다음 관찰에서는 교사가 판단할 수 있었던 권한·시간·동료 조건을 기록합니다.";
+      } else if (lowest.length === 1 && lowest[0] === "co") {
+        nextObservation = "다음 관찰에서는 규칙과 의사결정을 함께 조정한 장면을 기록합니다.";
+      }
+
+      const nextElement = agencyCheckResult.querySelector("[data-agency-next-observation]");
+      if (nextElement) nextElement.textContent = nextObservation;
+      agencyCheckResult.hidden = false;
+      agencyCheckStatus.textContent = "점검 결과를 정리했습니다.";
+      agencyCheckResult.focus();
+    });
+
+    agencyCheckForm.querySelector("[data-agency-reset]")?.addEventListener("click", () => {
+      agencyCheckForm.reset();
+      agencyCheckResult.hidden = true;
+      agencyCheckStatus.textContent = "점검 내용을 지웠습니다.";
     });
   }
 
