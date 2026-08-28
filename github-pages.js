@@ -44,6 +44,33 @@
     element.classList.add("is-visible");
   });
 
+  const heroVideo = document.querySelector(".hero-video");
+  const heroVideoToggle = document.querySelector(".hero-video-toggle");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function syncHeroVideoLabel() {
+    if (!heroVideo || !heroVideoToggle) return;
+    heroVideoToggle.textContent = heroVideo.paused ? "영상 재생하기" : "영상 멈추기";
+  }
+
+  function applyHeroMotionPreference() {
+    if (!heroVideo) return;
+    if (reducedMotion.matches) heroVideo.pause();
+    else heroVideo.play().catch(syncHeroVideoLabel);
+    syncHeroVideoLabel();
+  }
+
+  if (heroVideo && heroVideoToggle) {
+    heroVideo.addEventListener("play", syncHeroVideoLabel);
+    heroVideo.addEventListener("pause", syncHeroVideoLabel);
+    heroVideoToggle.addEventListener("click", () => {
+      if (heroVideo.paused) heroVideo.play().catch(syncHeroVideoLabel);
+      else heroVideo.pause();
+    });
+    reducedMotion.addEventListener("change", applyHeroMotionPreference);
+    applyHeroMotionPreference();
+  }
+
   const track = new URLSearchParams(window.location.search).get("track");
   const trackLabels = {
     student: "학생 주도성",
