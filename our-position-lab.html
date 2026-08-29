@@ -668,85 +668,134 @@
         filter: saturate(.82) contrast(1.03);
       }
 
-      .compass-center {
-        position: absolute;
-        z-index: 5;
-        top: 50%;
-        left: 50%;
-        width: 15px;
-        height: 15px;
-        border: 3px solid var(--bg);
-        background: var(--accent);
-        transform: translate(-50%, -50%);
-      }
-
-      .compass-needle {
+      .compass-pin {
         position: absolute;
         z-index: 4;
-        bottom: 50%;
+        top: 50%;
         left: 50%;
-        width: 26px;
-        height: 26%;
-        background: var(--accent);
-        clip-path: polygon(50% 0, 86% 100%, 50% 82%, 14% 100%);
-        transform: translateX(-50%) rotate(var(--angle));
-        transform-origin: 50% 100%;
+        width: 60%;
+        height: 60%;
+        object-fit: contain;
+        pointer-events: none;
+        transform: translate(-50%, -50%) rotate(var(--angle));
+        transform-origin: 50% 50%;
         transition: transform 900ms var(--ease);
       }
 
-      .compass-needle::after {
-        position: absolute;
-        top: 100%;
-        left: 7px;
-        width: 12px;
-        height: 72%;
-        background: var(--ink-3);
-        clip-path: polygon(0 0, 50% 18%, 100% 0, 50% 100%);
-        content: "";
-      }
-
       .direction-button {
+        --label-line: 34px;
         position: absolute;
         z-index: 6;
         display: grid;
-        min-width: 136px;
-        gap: 6px;
-        padding: 12px 14px;
-        border: 1px solid var(--line-strong);
-        background: var(--bg);
+        min-width: 124px;
+        gap: 3px;
+        padding: 10px 0;
+        border: 0;
+        background: transparent;
+        color: var(--ink-2);
         cursor: pointer;
-        text-align: left;
-        transition: border-color 320ms var(--ease), background-color 320ms var(--ease);
+        text-align: center;
+        transition: color 320ms var(--ease);
+      }
+
+      .direction-button::before,
+      .direction-button::after {
+        position: absolute;
+        background: var(--line-strong);
+        content: "";
+        transition: background-color 320ms var(--ease);
       }
 
       .direction-button:hover,
       .direction-button.is-active {
-        border-color: var(--accent);
-        background: var(--surface-2);
+        color: var(--ink);
+      }
+
+      .direction-button:hover::before,
+      .direction-button:hover::after,
+      .direction-button.is-active::before,
+      .direction-button.is-active::after {
+        background: var(--accent);
       }
 
       .direction-button[data-direction="structure"] {
-        top: 28px;
+        top: 18px;
         left: 50%;
         transform: translateX(-50%);
+      }
+
+      .direction-button[data-direction="structure"]::before {
+        top: calc(100% - 2px);
+        left: 50%;
+        width: 1px;
+        height: var(--label-line);
+      }
+
+      .direction-button[data-direction="structure"]::after {
+        top: calc(100% + var(--label-line) - 4px);
+        left: calc(50% - 2px);
+        width: 5px;
+        height: 5px;
       }
 
       .direction-button[data-direction="authority"] {
         top: 50%;
-        right: 28px;
+        right: 16px;
         transform: translateY(-50%);
       }
 
+      .direction-button[data-direction="authority"]::before {
+        top: 50%;
+        right: calc(100% - 2px);
+        width: var(--label-line);
+        height: 1px;
+      }
+
+      .direction-button[data-direction="authority"]::after {
+        top: calc(50% - 2px);
+        right: calc(100% + var(--label-line) - 4px);
+        width: 5px;
+        height: 5px;
+      }
+
       .direction-button[data-direction="relation"] {
-        bottom: 28px;
+        bottom: 18px;
         left: 50%;
         transform: translateX(-50%);
       }
 
+      .direction-button[data-direction="relation"]::before {
+        bottom: calc(100% - 2px);
+        left: 50%;
+        width: 1px;
+        height: var(--label-line);
+      }
+
+      .direction-button[data-direction="relation"]::after {
+        bottom: calc(100% + var(--label-line) - 4px);
+        left: calc(50% - 2px);
+        width: 5px;
+        height: 5px;
+      }
+
       .direction-button[data-direction="record"] {
         top: 50%;
-        left: 28px;
+        left: 16px;
         transform: translateY(-50%);
+      }
+
+      .direction-button[data-direction="record"]::before {
+        top: 50%;
+        left: calc(100% - 2px);
+        width: var(--label-line);
+        height: 1px;
+      }
+
+      .direction-button[data-direction="record"]::after {
+        top: calc(50% - 2px);
+        left: calc(100% + var(--label-line) - 4px);
+        width: 5px;
+        height: 5px;
       }
 
       .direction-code {
@@ -754,8 +803,21 @@
       }
 
       .direction-button strong {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 500;
+      }
+
+      .direction-note {
+        color: var(--ink-3);
+        font-size: 10px;
+        letter-spacing: .04em;
+        line-height: 1.45;
+        transition: color 320ms var(--ease);
+      }
+
+      .direction-button:hover .direction-note,
+      .direction-button.is-active .direction-note {
+        color: var(--ink-2);
       }
 
       .compass-detail {
@@ -1040,24 +1102,29 @@
         }
 
         .direction-button {
-          min-width: 108px;
-          padding: 9px 10px;
+          --label-line: 22px;
+          min-width: 104px;
+          padding: 8px 0;
         }
 
         .direction-button[data-direction="structure"] {
-          top: 18px;
+          top: 12px;
         }
 
         .direction-button[data-direction="authority"] {
-          right: 12px;
+          right: 8px;
         }
 
         .direction-button[data-direction="relation"] {
-          bottom: 18px;
+          bottom: 12px;
         }
 
         .direction-button[data-direction="record"] {
-          left: 12px;
+          left: 8px;
+        }
+
+        .direction-note {
+          display: none;
         }
 
         .footer-grid {
@@ -1308,6 +1375,7 @@
               >
                 <span class="direction-code">N · 01</span>
                 <strong>구조</strong>
+                <span class="direction-note">선택의 기준</span>
               </button>
               <button
                 class="direction-button"
@@ -1317,6 +1385,7 @@
               >
                 <span class="direction-code">E · 02</span>
                 <strong>권한</strong>
+                <span class="direction-note">판단의 공간</span>
               </button>
               <button
                 class="direction-button"
@@ -1326,6 +1395,7 @@
               >
                 <span class="direction-code">S · 03</span>
                 <strong>관계</strong>
+                <span class="direction-note">공동의 책임</span>
               </button>
               <button
                 class="direction-button"
@@ -1335,6 +1405,7 @@
               >
                 <span class="direction-code">W · 04</span>
                 <strong>기록</strong>
+                <span class="direction-note">다음 선택의 근거</span>
               </button>
               <div class="compass-dial" id="compass-dial" style="--angle: 0deg">
                 <img
@@ -1344,8 +1415,14 @@
                   width="1254"
                   height="1254"
                 />
-                <span class="compass-needle"></span>
-                <span class="compass-center" aria-hidden="true"></span>
+                <img
+                  class="compass-pin"
+                  src="images/position-compass-pin.png"
+                  alt=""
+                  width="1254"
+                  height="1254"
+                  aria-hidden="true"
+                />
               </div>
             </div>
 
