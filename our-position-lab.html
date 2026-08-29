@@ -671,24 +671,24 @@
       .compass-center {
         position: absolute;
         z-index: 5;
-        top: 49.5%;
+        top: 50%;
         left: 50%;
-        width: 11px;
-        height: 11px;
-        border: 2px solid var(--accent);
-        background: var(--bg);
+        width: 15px;
+        height: 15px;
+        border: 3px solid var(--bg);
+        background: var(--accent);
         transform: translate(-50%, -50%);
       }
 
       .compass-needle {
         position: absolute;
         z-index: 4;
-        bottom: 50.5%;
+        bottom: 50%;
         left: 50%;
-        width: 10px;
-        height: 29%;
+        width: 26px;
+        height: 26%;
         background: var(--accent);
-        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        clip-path: polygon(50% 0, 86% 100%, 50% 82%, 14% 100%);
         transform: translateX(-50%) rotate(var(--angle));
         transform-origin: 50% 100%;
         transition: transform 900ms var(--ease);
@@ -697,11 +697,11 @@
       .compass-needle::after {
         position: absolute;
         top: 100%;
-        left: 2px;
-        width: 6px;
-        height: 74%;
+        left: 7px;
+        width: 12px;
+        height: 72%;
         background: var(--ink-3);
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        clip-path: polygon(0 0, 50% 18%, 100% 0, 50% 100%);
         content: "";
       }
 
@@ -1339,8 +1339,8 @@
               <div class="compass-dial" id="compass-dial" style="--angle: 0deg">
                 <img
                   class="compass-image"
-                  src="images/position-compass-fantasy.jpg"
-                  alt="먹빛 금속 프레임과 바랜 종이 위에 별자리 선이 새겨진 판타지 나침반"
+                  src="images/position-learning-compass.jpg"
+                  alt="관계의 노드와 순환 화살표가 동심원으로 배치된 학습 나침반"
                   width="1254"
                   height="1254"
                 />
