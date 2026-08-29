@@ -655,54 +655,40 @@
         --angle: 0deg;
         position: relative;
         z-index: 2;
-        width: min(64%, 430px);
+        width: min(76%, 540px);
         aspect-ratio: 1;
-        border: 1px solid var(--line-strong);
-        background: var(--surface);
-        transform: rotate(45deg);
+        overflow: hidden;
       }
 
-      .compass-dial::before,
-      .compass-dial::after {
-        position: absolute;
-        background: var(--line-strong);
-        content: "";
-      }
-
-      .compass-dial::before {
-        top: 50%;
-        right: 18px;
-        left: 18px;
-        height: 1px;
-      }
-
-      .compass-dial::after {
-        top: 18px;
-        bottom: 18px;
-        left: 50%;
-        width: 1px;
+      .compass-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(.82) contrast(1.03);
       }
 
       .compass-center {
         position: absolute;
-        z-index: 4;
-        top: 50%;
+        z-index: 5;
+        top: 48.4%;
         left: 50%;
-        width: 18px;
-        height: 18px;
-        border: 4px solid var(--surface);
-        background: var(--ink);
+        width: 11px;
+        height: 11px;
+        border: 2px solid var(--accent);
+        background: var(--bg);
         transform: translate(-50%, -50%);
       }
 
       .compass-needle {
         position: absolute;
-        z-index: 3;
-        bottom: 50%;
+        z-index: 4;
+        bottom: 51.6%;
         left: 50%;
-        width: 5px;
-        height: 39%;
+        width: 10px;
+        height: 29%;
         background: var(--accent);
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
         transform: translateX(-50%) rotate(var(--angle));
         transform-origin: 50% 100%;
         transition: transform 900ms var(--ease);
@@ -711,10 +697,11 @@
       .compass-needle::after {
         position: absolute;
         top: 100%;
-        left: 0;
-        width: 5px;
-        height: 58%;
+        left: 2px;
+        width: 6px;
+        height: 74%;
         background: var(--ink-3);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
         content: "";
       }
 
@@ -1306,7 +1293,7 @@
               <h2 id="compass-title">나침반은 정답보다 방향을 가리킵니다.</h2>
             </div>
             <p class="study-description">
-              네 방향은 연구소가 교실을 읽는 네 가지 관점입니다. 나침반이 이동하며 각
+              네 방향은 연구소가 교실을 읽는 네 가지 관점입니다. 나침반 바늘이 이동하며 각
               원칙과 실제로 관찰할 질문을 차례로 설명합니다.
             </p>
           </header>
@@ -1317,7 +1304,7 @@
                 class="direction-button is-active"
                 type="button"
                 data-direction="structure"
-                data-angle="-45"
+                data-angle="0"
               >
                 <span class="direction-code">N · 01</span>
                 <strong>구조</strong>
@@ -1326,7 +1313,7 @@
                 class="direction-button"
                 type="button"
                 data-direction="authority"
-                data-angle="45"
+                data-angle="90"
               >
                 <span class="direction-code">E · 02</span>
                 <strong>권한</strong>
@@ -1335,7 +1322,7 @@
                 class="direction-button"
                 type="button"
                 data-direction="relation"
-                data-angle="135"
+                data-angle="180"
               >
                 <span class="direction-code">S · 03</span>
                 <strong>관계</strong>
@@ -1344,14 +1331,21 @@
                 class="direction-button"
                 type="button"
                 data-direction="record"
-                data-angle="225"
+                data-angle="270"
               >
                 <span class="direction-code">W · 04</span>
                 <strong>기록</strong>
               </button>
-              <div class="compass-dial" id="compass-dial" style="--angle: -45deg" aria-hidden="true">
+              <div class="compass-dial" id="compass-dial" style="--angle: 0deg">
+                <img
+                  class="compass-image"
+                  src="images/position-compass-instrument.jpg"
+                  alt="검은 금속 하우징과 밝은 눈금판으로 구성된 나침반을 위에서 본 모습"
+                  width="1254"
+                  height="1254"
+                />
                 <span class="compass-needle"></span>
-                <span class="compass-center"></span>
+                <span class="compass-center" aria-hidden="true"></span>
               </div>
             </div>
 
