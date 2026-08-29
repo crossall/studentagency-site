@@ -625,6 +625,7 @@
         position: relative;
         display: grid;
         min-height: 700px;
+        padding-bottom: 84px;
         place-items: center;
         overflow: hidden;
         border-right: 1px solid var(--line-strong);
@@ -682,28 +683,46 @@
         transition: transform 900ms var(--ease);
       }
 
-      .direction-button {
-        --label-line: 34px;
+      .compass-directions {
         position: absolute;
         z-index: 6;
+        right: 32px;
+        bottom: 24px;
+        left: 32px;
         display: grid;
-        min-width: 124px;
-        gap: 3px;
-        padding: 10px 0;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .direction-button {
+        position: relative;
+        display: flex;
+        min-width: 0;
+        min-height: 48px;
+        align-items: baseline;
+        gap: 10px;
+        padding: 12px 10px 0;
         border: 0;
         background: transparent;
         color: var(--ink-2);
         cursor: pointer;
-        text-align: center;
+        text-align: left;
         transition: color 320ms var(--ease);
       }
 
-      .direction-button::before,
-      .direction-button::after {
+      .direction-button::before {
         position: absolute;
-        background: var(--line-strong);
+        top: -1px;
+        right: 0;
+        left: 0;
+        height: 2px;
+        background: transparent;
         content: "";
         transition: background-color 320ms var(--ease);
+      }
+
+      .direction-button + .direction-button {
+        border-left: 1px solid var(--line);
       }
 
       .direction-button:hover,
@@ -712,112 +731,25 @@
       }
 
       .direction-button:hover::before,
-      .direction-button:hover::after,
-      .direction-button.is-active::before,
-      .direction-button.is-active::after {
+      .direction-button.is-active::before {
         background: var(--accent);
       }
 
-      .direction-button[data-direction="structure"] {
-        top: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .direction-button[data-direction="structure"]::before {
-        top: calc(100% - 2px);
-        left: 50%;
-        width: 1px;
-        height: var(--label-line);
-      }
-
-      .direction-button[data-direction="structure"]::after {
-        top: calc(100% + var(--label-line) - 4px);
-        left: calc(50% - 2px);
-        width: 5px;
-        height: 5px;
-      }
-
-      .direction-button[data-direction="authority"] {
-        top: 50%;
-        right: 16px;
-        transform: translateY(-50%);
-      }
-
-      .direction-button[data-direction="authority"]::before {
-        top: 50%;
-        right: calc(100% - 2px);
-        width: var(--label-line);
-        height: 1px;
-      }
-
-      .direction-button[data-direction="authority"]::after {
-        top: calc(50% - 2px);
-        right: calc(100% + var(--label-line) - 4px);
-        width: 5px;
-        height: 5px;
-      }
-
-      .direction-button[data-direction="relation"] {
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .direction-button[data-direction="relation"]::before {
-        bottom: calc(100% - 2px);
-        left: 50%;
-        width: 1px;
-        height: var(--label-line);
-      }
-
-      .direction-button[data-direction="relation"]::after {
-        bottom: calc(100% + var(--label-line) - 4px);
-        left: calc(50% - 2px);
-        width: 5px;
-        height: 5px;
-      }
-
-      .direction-button[data-direction="record"] {
-        top: 50%;
-        left: 16px;
-        transform: translateY(-50%);
-      }
-
-      .direction-button[data-direction="record"]::before {
-        top: 50%;
-        left: calc(100% - 2px);
-        width: var(--label-line);
-        height: 1px;
-      }
-
-      .direction-button[data-direction="record"]::after {
-        top: calc(50% - 2px);
-        left: calc(100% + var(--label-line) - 4px);
-        width: 5px;
-        height: 5px;
-      }
-
       .direction-code {
+        color: var(--ink-3);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        letter-spacing: .08em;
+        transition: color 320ms var(--ease);
+      }
+
+      .direction-button.is-active .direction-code {
         color: var(--accent);
       }
 
       .direction-button strong {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 500;
-      }
-
-      .direction-note {
-        color: var(--ink-3);
-        font-size: 10px;
-        letter-spacing: .04em;
-        line-height: 1.45;
-        transition: color 320ms var(--ease);
-      }
-
-      .direction-button:hover .direction-note,
-      .direction-button.is-active .direction-note {
-        color: var(--ink-2);
       }
 
       .compass-detail {
@@ -1095,36 +1027,25 @@
 
         .compass-stage {
           min-height: 580px;
+          padding-bottom: 72px;
         }
 
         .compass-dial {
           width: 58%;
         }
 
-        .direction-button {
-          --label-line: 22px;
-          min-width: 104px;
-          padding: 8px 0;
-        }
-
-        .direction-button[data-direction="structure"] {
-          top: 12px;
-        }
-
-        .direction-button[data-direction="authority"] {
-          right: 8px;
-        }
-
-        .direction-button[data-direction="relation"] {
+        .compass-directions {
+          right: 12px;
           bottom: 12px;
+          left: 12px;
         }
 
-        .direction-button[data-direction="record"] {
-          left: 8px;
-        }
-
-        .direction-note {
-          display: none;
+        .direction-button {
+          min-height: 54px;
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 4px;
+          padding: 10px 5px 0;
         }
 
         .footer-grid {
@@ -1367,46 +1288,44 @@
 
           <div class="compass-layout" id="compass-layout">
             <div class="compass-stage">
-              <button
-                class="direction-button is-active"
-                type="button"
-                data-direction="structure"
-                data-angle="0"
-              >
-                <span class="direction-code">N · 01</span>
-                <strong>구조</strong>
-                <span class="direction-note">선택의 기준</span>
-              </button>
-              <button
-                class="direction-button"
-                type="button"
-                data-direction="authority"
-                data-angle="90"
-              >
-                <span class="direction-code">E · 02</span>
-                <strong>권한</strong>
-                <span class="direction-note">판단의 공간</span>
-              </button>
-              <button
-                class="direction-button"
-                type="button"
-                data-direction="relation"
-                data-angle="180"
-              >
-                <span class="direction-code">S · 03</span>
-                <strong>관계</strong>
-                <span class="direction-note">공동의 책임</span>
-              </button>
-              <button
-                class="direction-button"
-                type="button"
-                data-direction="record"
-                data-angle="270"
-              >
-                <span class="direction-code">W · 04</span>
-                <strong>기록</strong>
-                <span class="direction-note">다음 선택의 근거</span>
-              </button>
+              <div class="compass-directions" role="group" aria-label="연구소의 네 방향">
+                <button
+                  class="direction-button is-active"
+                  type="button"
+                  data-direction="structure"
+                  data-angle="0"
+                >
+                  <span class="direction-code">N · 01</span>
+                  <strong>구조</strong>
+                </button>
+                <button
+                  class="direction-button"
+                  type="button"
+                  data-direction="authority"
+                  data-angle="90"
+                >
+                  <span class="direction-code">E · 02</span>
+                  <strong>권한</strong>
+                </button>
+                <button
+                  class="direction-button"
+                  type="button"
+                  data-direction="relation"
+                  data-angle="180"
+                >
+                  <span class="direction-code">S · 03</span>
+                  <strong>관계</strong>
+                </button>
+                <button
+                  class="direction-button"
+                  type="button"
+                  data-direction="record"
+                  data-angle="270"
+                >
+                  <span class="direction-code">W · 04</span>
+                  <strong>기록</strong>
+                </button>
+              </div>
               <div class="compass-dial" id="compass-dial" style="--angle: 0deg">
                 <img
                   class="compass-image"
@@ -1472,6 +1391,7 @@
         const conditionField = document.getElementById("condition-field");
         const conditionCursor = document.getElementById("condition-cursor");
         const conditionButtons = [...document.querySelectorAll("[data-condition]")];
+        const conditionOrder = ["structure", "authority", "relation", "record"];
         const conditionData = {
           structure: {
             label: "01 · STRUCTURE",
@@ -1499,7 +1419,6 @@
           },
         };
 
-        const compassLayout = document.getElementById("compass-layout");
         const compassDial = document.getElementById("compass-dial");
         const directionButtons = [...document.querySelectorAll("[data-direction]")];
         const directionOrder = ["structure", "authority", "relation", "record"];
@@ -1535,10 +1454,10 @@
         };
 
         let motionIndex = 0;
+        let conditionIndex = 0;
         let compassIndex = 0;
         let isAutoPlaying = !reducedMotion.matches;
-        let motionTimer;
-        let compassTimer;
+        let autoTimer;
 
         function setMotion(index) {
           motionIndex = index;
@@ -1551,6 +1470,7 @@
 
         function setCondition(key) {
           const detail = conditionData[key];
+          conditionIndex = conditionOrder.indexOf(key);
           document.getElementById("condition-label").textContent = detail.label;
           document.getElementById("condition-heading").textContent = detail.heading;
           document.getElementById("condition-copy").textContent = detail.copy;
@@ -1576,19 +1496,17 @@
         }
 
         function stopTimers() {
-          window.clearInterval(motionTimer);
-          window.clearInterval(compassTimer);
+          window.clearInterval(autoTimer);
         }
 
         function startTimers() {
           stopTimers();
           if (!isAutoPlaying || reducedMotion.matches) return;
-          motionTimer = window.setInterval(() => {
+          autoTimer = window.setInterval(() => {
             setMotion((motionIndex + 1) % motionSteps.length);
-          }, 3200);
-          compassTimer = window.setInterval(() => {
+            setCondition(conditionOrder[(conditionIndex + 1) % conditionOrder.length]);
             setCompass(directionOrder[(compassIndex + 1) % directionOrder.length]);
-          }, 4400);
+          }, 5000);
         }
 
         function syncToggle() {
@@ -1605,7 +1523,10 @@
         });
 
         conditionButtons.forEach((button) => {
-          const activate = () => setCondition(button.dataset.condition);
+          const activate = () => {
+            setCondition(button.dataset.condition);
+            startTimers();
+          };
           button.addEventListener("pointerenter", activate);
           button.addEventListener("focus", activate);
           button.addEventListener("click", activate);
@@ -1629,9 +1550,6 @@
           });
           button.addEventListener("focus", () => setCompass(button.dataset.direction));
         });
-
-        compassLayout.addEventListener("pointerenter", stopTimers);
-        compassLayout.addEventListener("pointerleave", startTimers);
 
         motionToggle.addEventListener("click", () => {
           isAutoPlaying = !isAutoPlaying;
