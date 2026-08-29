@@ -81,7 +81,6 @@
   });
 
   const heroVideo = document.querySelector(".hero-video");
-  const heroVideoToggle = document.querySelector(".hero-video-toggle");
   const heroReelIndex = document.querySelector(".hero-reel-index");
   const firstHeroSource = heroVideo?.querySelector("source")?.src;
   const heroPlaylist = firstHeroSource
@@ -92,11 +91,8 @@
       ]
     : [];
   let heroClipIndex = 0;
-  let heroPlayRequested = true;
 
-  function syncHeroVideoLabel() {
-    if (!heroVideo || !heroVideoToggle) return;
-    heroVideoToggle.textContent = heroVideo.paused ? "영상 재생하기" : "영상 멈추기";
+  function syncHeroReelIndex() {
     if (heroReelIndex) {
       heroReelIndex.textContent = String(heroClipIndex + 1).padStart(2, "0") + " / 03";
     }
@@ -105,30 +101,19 @@
   function applyHeroMotionPreference() {
     if (!heroVideo) return;
     if (reducedMotion.matches) heroVideo.pause();
-    else if (heroPlayRequested) heroVideo.play().catch(syncHeroVideoLabel);
-    syncHeroVideoLabel();
+    else heroVideo.play().catch(() => undefined);
+    syncHeroReelIndex();
   }
 
-  if (heroVideo && heroVideoToggle) {
-    heroVideo.addEventListener("play", syncHeroVideoLabel);
-    heroVideo.addEventListener("pause", syncHeroVideoLabel);
+  if (heroVideo) {
     heroVideo.addEventListener("ended", () => {
       heroClipIndex = (heroClipIndex + 1) % heroPlaylist.length;
       heroVideo.src = heroPlaylist[heroClipIndex];
       heroVideo.load();
-      if (!reducedMotion.matches && heroPlayRequested) {
-        heroVideo.play().catch(syncHeroVideoLabel);
+      if (!reducedMotion.matches) {
+        heroVideo.play().catch(() => undefined);
       }
-      syncHeroVideoLabel();
-    });
-    heroVideoToggle.addEventListener("click", () => {
-      if (heroVideo.paused) {
-        heroPlayRequested = true;
-        heroVideo.play().catch(syncHeroVideoLabel);
-      } else {
-        heroPlayRequested = false;
-        heroVideo.pause();
-      }
+      syncHeroReelIndex();
     });
     reducedMotion.addEventListener("change", applyHeroMotionPreference);
     applyHeroMotionPreference();
