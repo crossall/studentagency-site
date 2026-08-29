@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Our Position Interaction Lab — StudentAgency</title>
+    <meta
+      name="description"
+      content="주도성연구소 Our Position 영역을 위한 세 가지 상호작용 실험입니다."
+    />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0a0c10;
+        --surface: #12151c;
+        --surface-2: #191d26;
+        --line: #262b36;
+        --line-strong: #39404f;
+        --ink: #eef1f6;
+        --ink-2: #a7aebc;
+        --ink-3: #6e7686;
+        --accent: #5b84ff;
+        --accent-strong: #7a9bff;
+        --accent-ink: #070910;
+        --max: 1180px;
+        --ease: cubic-bezier(.2, 0, 0, 1);
+        --duration: 520ms;
+      }
+
+      * {
+        box-sizing: border-box;
+        border-radius: 0 !important;
+      }
+
+      html {
+        background: var(--bg);
+        color: var(--ink);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        overflow-x: clip;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Pretendard, "IBM Plex Sans KR", sans-serif;
+        font-size: 16px;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button,
+      a {
+        font: inherit;
+      }
+
+      button {
+        color: inherit;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      ol {
+        margin: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        word-break: keep-all;
+        text-wrap: balance;
+      }
+
+      .container {
+        width: min(calc(100% - 64px), var(--max));
+        margin-inline: auto;
+      }
+
+      .lab-header {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .lab-nav {
+        display: flex;
+        min-height: 72px;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .wordmark {
+        flex: none;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: .14em;
+        text-transform: lowercase;
+      }
+
+      .lab-state {
+        padding-left: 18px;
+        border-left: 1px solid var(--line-strong);
+        color: var(--accent);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      .lab-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-left: auto;
+      }
+
+      .lab-links a,
+      .motion-toggle {
+        color: var(--ink-2);
+        font-size: 12px;
+        letter-spacing: .06em;
+        transition: color 320ms var(--ease);
+      }
+
+      .lab-links a:hover,
+      .motion-toggle:hover {
+        color: var(--ink);
+      }
+
+      .motion-toggle {
+        min-height: 38px;
+        padding-inline: 14px;
+        border: 1px solid var(--line-strong);
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .lab-intro {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 24px;
+        padding-block: 96px 112px;
+      }
+
+      .intro-label,
+      .section-label,
+      .study-number,
+      .micro-label,
+      .condition-code,
+      .direction-code {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      .intro-label {
+        grid-column: 1 / span 3;
+        padding-top: 10px;
+        color: var(--accent);
+      }
+
+      .intro-copy {
+        display: grid;
+        grid-column: 4 / -1;
+        gap: 32px;
+      }
+
+      .intro-copy h1 {
+        max-width: 900px;
+        font-size: clamp(2.7rem, 6.8vw, 5.5rem);
+        font-weight: 600;
+        letter-spacing: -.045em;
+        line-height: 1.03;
+      }
+
+      .intro-thesis {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(240px, .8fr);
+        gap: 48px;
+        padding-top: 28px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .intro-thesis > p:first-child {
+        max-width: 54ch;
+        color: var(--ink-2);
+        font-size: 18px;
+        line-height: 1.8;
+      }
+
+      .intro-note {
+        color: var(--ink-3);
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      .study {
+        padding-block: 112px;
+        border-top: 1px solid var(--line);
+      }
+
+      .study:nth-of-type(odd) {
+        background: var(--surface);
+      }
+
+      .study-heading {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 24px;
+        margin-bottom: 56px;
+      }
+
+      .study-index {
+        grid-column: 1 / span 3;
+      }
+
+      .study-number {
+        color: var(--accent);
+      }
+
+      .section-label {
+        margin-top: 12px;
+        color: var(--ink-3);
+      }
+
+      .study-title {
+        grid-column: 4 / span 5;
+      }
+
+      .study-title h2 {
+        font-size: clamp(2rem, 4.2vw, 3.6rem);
+        font-weight: 600;
+        letter-spacing: -.04em;
+        line-height: 1.12;
+      }
+
+      .study-description {
+        grid-column: 9 / -1;
+        align-self: end;
+        color: var(--ink-2);
+        font-size: 14px;
+      }
+
+      /* Study 01 — AAR movement */
+      .motion-stage {
+        --stage: 0;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        background: var(--bg);
+      }
+
+      .motion-stage::after {
+        position: absolute;
+        background: var(--line);
+        content: "";
+        pointer-events: none;
+      }
+
+      .motion-stage::after {
+        top: 102px;
+        right: 0;
+        left: 0;
+        height: 1px;
+      }
+
+      .motion-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        min-height: 102px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 24px 28px;
+      }
+
+      .motion-header strong {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .motion-header span {
+        color: var(--ink-3);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: .12em;
+      }
+
+      .motion-line {
+        position: absolute;
+        z-index: 3;
+        top: 101px;
+        left: 0;
+        width: calc(16.666% + var(--stage) * 33.334%);
+        height: 2px;
+        background: var(--accent);
+        transition: width 720ms var(--ease);
+      }
+
+      .motion-pulse {
+        position: absolute;
+        z-index: 4;
+        top: 94px;
+        left: calc(16.666% + var(--stage) * 33.334%);
+        width: 14px;
+        height: 14px;
+        border: 3px solid var(--bg);
+        background: var(--accent);
+        transform: translateX(-50%);
+        transition: left 720ms var(--ease);
+      }
+
+      .motion-steps {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        min-height: 430px;
+      }
+
+      .motion-step {
+        display: grid;
+        min-width: 0;
+        align-content: space-between;
+        gap: 48px;
+        padding: 54px 28px 32px;
+        border: 0;
+        background: transparent;
+        color: var(--ink-3);
+        cursor: pointer;
+        text-align: left;
+        transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+      }
+
+      .motion-step + .motion-step {
+        border-left: 1px solid var(--line);
+      }
+
+      .motion-step:hover,
+      .motion-step.is-active {
+        background: var(--surface-2);
+        color: var(--ink);
+      }
+
+      .motion-step-top {
+        display: grid;
+        gap: 18px;
+      }
+
+      .motion-step-index {
+        color: var(--accent);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+      }
+
+      .motion-step h3 {
+        font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+        font-weight: 500;
+        letter-spacing: -.035em;
+        line-height: 1.25;
+      }
+
+      .motion-step-copy {
+        display: grid;
+        gap: 14px;
+      }
+
+      .motion-step-copy strong {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .motion-step-copy span {
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      .motion-support {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-right: 1px solid var(--line-strong);
+        border-bottom: 1px solid var(--line-strong);
+        border-left: 1px solid var(--line-strong);
+      }
+
+      .motion-support > div {
+        display: grid;
+        gap: 10px;
+        padding: 22px 28px;
+        border-right: 1px solid var(--line-strong);
+      }
+
+      .motion-support > div:last-child {
+        border-right: 0;
+      }
+
+      .motion-support span {
+        color: var(--accent);
+      }
+
+      .motion-support strong {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Study 02 — condition hover */
+      .condition-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(320px, .75fr);
+        border: 1px solid var(--line-strong);
+        background: var(--bg);
+      }
+
+      .condition-field {
+        position: relative;
+        display: grid;
+        min-height: 620px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        overflow: hidden;
+        border-right: 1px solid var(--line-strong);
+      }
+
+      .condition-field::before,
+      .condition-field::after {
+        position: absolute;
+        z-index: 1;
+        background: var(--line-strong);
+        content: "";
+        pointer-events: none;
+      }
+
+      .condition-field::before {
+        top: 50%;
+        right: 0;
+        left: 0;
+        height: 1px;
+      }
+
+      .condition-field::after {
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+      }
+
+      .condition-core {
+        position: absolute;
+        z-index: 4;
+        top: 50%;
+        left: 50%;
+        display: grid;
+        width: min(52%, 340px);
+        min-height: 154px;
+        align-content: center;
+        gap: 8px;
+        padding: 24px 28px;
+        border: 1px solid var(--accent-strong);
+        background: var(--accent);
+        color: var(--accent-ink);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .condition-core span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        letter-spacing: .13em;
+      }
+
+      .condition-core strong {
+        font-size: clamp(1.35rem, 2.6vw, 2rem);
+        font-weight: 600;
+      }
+
+      .condition-core small {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .condition-button {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        align-content: start;
+        gap: 14px;
+        padding: 28px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        text-align: left;
+        transition: background-color 320ms var(--ease), color 320ms var(--ease);
+      }
+
+      .condition-button:nth-of-type(2n) {
+        text-align: right;
+      }
+
+      .condition-button:nth-of-type(n + 3) {
+        align-content: end;
+      }
+
+      .condition-button:hover,
+      .condition-button.is-active {
+        background: var(--surface-2);
+      }
+
+      .condition-code {
+        color: var(--accent);
+      }
+
+      .condition-button strong {
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      .condition-button small {
+        color: var(--ink-3);
+        font-size: 12px;
+      }
+
+      .condition-cursor {
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        opacity: 0;
+        transform: translate(-50%, -50%);
+        transition: opacity 180ms var(--ease);
+        pointer-events: none;
+      }
+
+      .condition-field.is-pointing .condition-cursor {
+        opacity: 1;
+      }
+
+      .condition-detail {
+        display: grid;
+        min-width: 0;
+        align-content: space-between;
+        gap: 48px;
+        padding: 36px;
+        background: var(--surface);
+      }
+
+      .condition-detail-heading {
+        display: grid;
+        gap: 22px;
+      }
+
+      .condition-detail-heading .micro-label {
+        color: var(--accent);
+      }
+
+      .condition-detail h3 {
+        font-size: clamp(1.7rem, 3.3vw, 2.6rem);
+        font-weight: 500;
+        letter-spacing: -.035em;
+        line-height: 1.3;
+      }
+
+      .condition-detail-copy {
+        display: grid;
+        gap: 28px;
+      }
+
+      .condition-detail-copy > p {
+        color: var(--ink-2);
+        font-size: 15px;
+      }
+
+      .condition-question {
+        display: grid;
+        gap: 12px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .condition-question span {
+        color: var(--ink-3);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        letter-spacing: .12em;
+      }
+
+      .condition-question strong {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      /* Study 03 — compass */
+      .compass-layout {
+        display: grid;
+        grid-template-columns: minmax(420px, 1.15fr) minmax(0, .85fr);
+        border: 1px solid var(--line-strong);
+        background: var(--bg);
+      }
+
+      .compass-stage {
+        position: relative;
+        display: grid;
+        min-height: 700px;
+        place-items: center;
+        overflow: hidden;
+        border-right: 1px solid var(--line-strong);
+      }
+
+      .compass-stage::before,
+      .compass-stage::after {
+        position: absolute;
+        background: var(--line);
+        content: "";
+      }
+
+      .compass-stage::before {
+        top: 50%;
+        right: 44px;
+        left: 44px;
+        height: 1px;
+      }
+
+      .compass-stage::after {
+        top: 44px;
+        bottom: 44px;
+        left: 50%;
+        width: 1px;
+      }
+
+      .compass-dial {
+        --angle: 0deg;
+        position: relative;
+        z-index: 2;
+        width: min(64%, 430px);
+        aspect-ratio: 1;
+        border: 1px solid var(--line-strong);
+        background: var(--surface);
+        transform: rotate(45deg);
+      }
+
+      .compass-dial::before,
+      .compass-dial::after {
+        position: absolute;
+        background: var(--line-strong);
+        content: "";
+      }
+
+      .compass-dial::before {
+        top: 50%;
+        right: 18px;
+        left: 18px;
+        height: 1px;
+      }
+
+      .compass-dial::after {
+        top: 18px;
+        bottom: 18px;
+        left: 50%;
+        width: 1px;
+      }
+
+      .compass-center {
+        position: absolute;
+        z-index: 4;
+        top: 50%;
+        left: 50%;
+        width: 18px;
+        height: 18px;
+        border: 4px solid var(--surface);
+        background: var(--ink);
+        transform: translate(-50%, -50%);
+      }
+
+      .compass-needle {
+        position: absolute;
+        z-index: 3;
+        bottom: 50%;
+        left: 50%;
+        width: 5px;
+        height: 39%;
+        background: var(--accent);
+        transform: translateX(-50%) rotate(var(--angle));
+        transform-origin: 50% 100%;
+        transition: transform 900ms var(--ease);
+      }
+
+      .compass-needle::after {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 5px;
+        height: 58%;
+        background: var(--ink-3);
+        content: "";
+      }
+
+      .direction-button {
+        position: absolute;
+        z-index: 6;
+        display: grid;
+        min-width: 136px;
+        gap: 6px;
+        padding: 12px 14px;
+        border: 1px solid var(--line-strong);
+        background: var(--bg);
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 320ms var(--ease), background-color 320ms var(--ease);
+      }
+
+      .direction-button:hover,
+      .direction-button.is-active {
+        border-color: var(--accent);
+        background: var(--surface-2);
+      }
+
+      .direction-button[data-direction="structure"] {
+        top: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .direction-button[data-direction="authority"] {
+        top: 50%;
+        right: 28px;
+        transform: translateY(-50%);
+      }
+
+      .direction-button[data-direction="relation"] {
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .direction-button[data-direction="record"] {
+        top: 50%;
+        left: 28px;
+        transform: translateY(-50%);
+      }
+
+      .direction-code {
+        color: var(--accent);
+      }
+
+      .direction-button strong {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .compass-detail {
+        display: grid;
+        align-content: space-between;
+        gap: 56px;
+        padding: 44px;
+        background: var(--surface);
+      }
+
+      .compass-detail-top {
+        display: grid;
+        gap: 26px;
+      }
+
+      .compass-position {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--line-strong);
+        color: var(--ink-3);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: .1em;
+      }
+
+      .compass-position strong {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .compass-detail h3 {
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        font-weight: 500;
+        letter-spacing: -.04em;
+        line-height: 1.15;
+      }
+
+      .compass-detail-copy {
+        color: var(--ink-2);
+        font-size: 16px;
+      }
+
+      .compass-question {
+        display: grid;
+        gap: 14px;
+        padding: 24px;
+        border-left: 3px solid var(--accent);
+        background: var(--surface-2);
+      }
+
+      .compass-question span {
+        color: var(--accent);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        letter-spacing: .12em;
+      }
+
+      .compass-question strong {
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.6;
+      }
+
+      .lab-footer {
+        padding-block: 48px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-grid {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 40px;
+        color: var(--ink-3);
+        font-size: 12px;
+      }
+
+      .footer-grid p {
+        max-width: 76ch;
+      }
+
+      @media (max-width: 900px) {
+        .lab-links {
+          display: none;
+        }
+
+        .motion-toggle {
+          margin-left: auto;
+        }
+
+        .lab-intro,
+        .study-heading {
+          grid-template-columns: repeat(8, minmax(0, 1fr));
+        }
+
+        .intro-label,
+        .study-index {
+          grid-column: 1 / span 2;
+        }
+
+        .intro-copy {
+          grid-column: 3 / -1;
+        }
+
+        .study-title {
+          grid-column: 3 / span 4;
+        }
+
+        .study-description {
+          grid-column: 7 / -1;
+        }
+
+        .condition-layout,
+        .compass-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .condition-field,
+        .compass-stage {
+          border-right: 0;
+          border-bottom: 1px solid var(--line-strong);
+        }
+
+        .condition-detail,
+        .compass-detail {
+          min-height: 430px;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .container {
+          width: min(calc(100% - 40px), var(--max));
+        }
+
+        .lab-nav {
+          min-height: 64px;
+          gap: 12px;
+        }
+
+        .wordmark {
+          font-size: 15px;
+        }
+
+        .lab-state {
+          padding-left: 12px;
+          font-size: 9px;
+        }
+
+        .motion-toggle {
+          max-width: 96px;
+          padding-inline: 10px;
+          font-size: 10px;
+          line-height: 1.35;
+        }
+
+        .lab-intro {
+          grid-template-columns: 1fr;
+          padding-block: 72px 80px;
+        }
+
+        .intro-label,
+        .intro-copy {
+          grid-column: 1;
+        }
+
+        .intro-copy h1 {
+          font-size: clamp(2.35rem, 14vw, 3.5rem);
+        }
+
+        .intro-thesis {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .study {
+          padding-block: 80px;
+        }
+
+        .study-heading {
+          grid-template-columns: 1fr;
+          gap: 24px;
+          margin-bottom: 40px;
+        }
+
+        .study-index,
+        .study-title,
+        .study-description {
+          grid-column: 1;
+        }
+
+        .motion-header {
+          min-height: 88px;
+          padding: 18px 20px;
+        }
+
+        .motion-stage::after {
+          top: 88px;
+        }
+
+        .motion-line {
+          top: 87px;
+        }
+
+        .motion-pulse {
+          top: 80px;
+        }
+
+        .motion-steps {
+          grid-template-columns: 1fr;
+          min-height: 0;
+        }
+
+        .motion-step {
+          min-height: 250px;
+          gap: 32px;
+          padding: 40px 22px 26px;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .motion-step + .motion-step {
+          border-left: 0;
+        }
+
+        .motion-step:last-child {
+          border-bottom: 0;
+        }
+
+        .motion-line,
+        .motion-pulse {
+          display: none;
+        }
+
+        .motion-support {
+          grid-template-columns: 1fr;
+        }
+
+        .motion-support > div {
+          border-right: 0;
+          border-bottom: 1px solid var(--line-strong);
+        }
+
+        .motion-support > div:last-child {
+          border-bottom: 0;
+        }
+
+        .condition-field {
+          min-height: 560px;
+        }
+
+        .condition-button {
+          padding: 18px;
+        }
+
+        .condition-button strong {
+          font-size: 16px;
+        }
+
+        .condition-core {
+          width: 58%;
+          min-height: 132px;
+          padding: 20px;
+        }
+
+        .condition-cursor {
+          display: none;
+        }
+
+        .condition-detail,
+        .compass-detail {
+          min-height: 0;
+          padding: 28px 24px;
+        }
+
+        .compass-stage {
+          min-height: 580px;
+        }
+
+        .compass-dial {
+          width: 58%;
+        }
+
+        .direction-button {
+          min-width: 108px;
+          padding: 9px 10px;
+        }
+
+        .direction-button[data-direction="structure"] {
+          top: 18px;
+        }
+
+        .direction-button[data-direction="authority"] {
+          right: 12px;
+        }
+
+        .direction-button[data-direction="relation"] {
+          bottom: 18px;
+        }
+
+        .direction-button[data-direction="record"] {
+          left: 12px;
+        }
+
+        .footer-grid {
+          display: grid;
+        }
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) {
+          color-scheme: light;
+          --bg: #ffffff;
+          --surface: #f5f6f9;
+          --surface-2: #ebeef4;
+          --line: #e1e5ed;
+          --line-strong: #c3c9d6;
+          --ink: #0a0c10;
+          --ink-2: #49515f;
+          --ink-3: #7a818e;
+          --accent: #1f4fd8;
+          --accent-strong: #163ca6;
+          --accent-ink: #ffffff;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: .01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: .01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="lab-header">
+      <div class="container lab-nav">
+        <a class="wordmark" href="./" aria-label="StudentAgency 홈페이지로 이동합니다">studentagency</a>
+        <span class="lab-state">Our Position Lab</span>
+        <nav class="lab-links" aria-label="상호작용 실험 목록">
+          <a href="#motion-study">움직임</a>
+          <a href="#condition-study">조건 탐색</a>
+          <a href="#compass-study">나침반</a>
+        </nav>
+        <button class="motion-toggle" id="motion-toggle" type="button">
+          자동 설명 멈추기
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="container lab-intro" aria-labelledby="lab-title">
+        <p class="intro-label">Position Study / 01</p>
+        <div class="intro-copy">
+          <h1 id="lab-title">주도성은<br />움직이는 조건입니다.</h1>
+          <div class="intro-thesis">
+            <p>
+              주도성은 개인 안에 고정된 성향이 아니라 목적을 세우고, 행동을 조절하고,
+              결과를 다음 선택에 돌려보내는 과정에서 성취됩니다. 이 과정은 교사의 설계
+              권한, 동료와의 공동 판단, 다시 살필 수 있는 기록이 만날 때 지속됩니다.
+            </p>
+            <p class="intro-note">
+              이 파일은 현재 홈페이지에 적용되지 않는 상호작용 실험입니다. OECD Learning
+              Compass 2030의 학생 주도성·공동 주도성·AAR 순환과 교사 주도성의 생태학적
+              관점을 하나의 화면 언어로 재구성합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="study" id="motion-study" aria-labelledby="motion-title">
+        <div class="container">
+          <header class="study-heading">
+            <div class="study-index">
+              <p class="study-number">01</p>
+              <p class="section-label">Agency in Motion</p>
+            </div>
+            <div class="study-title">
+              <h2 id="motion-title">선택이 다음 선택을 만듭니다.</h2>
+            </div>
+            <p class="study-description">
+              예측·행동·성찰을 세 개의 분리된 기능이 아니라 계속 이어지는 시간의 구조로
+              보여줍니다. 각 단계를 선택해 설명을 직접 살필 수도 있습니다.
+            </p>
+          </header>
+
+          <div class="motion-stage" id="motion-stage" style="--stage: 0">
+            <div class="motion-header">
+              <strong>Anticipation — Action — Reflection</strong>
+              <span id="motion-status">01 / 03 · 예측</span>
+            </div>
+            <span class="motion-line" aria-hidden="true"></span>
+            <span class="motion-pulse" aria-hidden="true"></span>
+            <div class="motion-steps" role="group" aria-label="AAR 순환의 세 단계">
+              <button class="motion-step is-active" type="button" data-motion-index="0">
+                <span class="motion-step-top">
+                  <span class="motion-step-index">01 · ANTICIPATION</span>
+                  <h3>가능한 미래를 그립니다.</h3>
+                </span>
+                <span class="motion-step-copy">
+                  <strong>목표를 자기 언어로 다시 세웁니다.</strong>
+                  <span>
+                    무엇을 할지 고르는 데서 멈추지 않고, 선택이 자신과 다른 사람에게 어떤
+                    결과를 만들지 예상합니다.
+                  </span>
+                </span>
+              </button>
+              <button class="motion-step" type="button" data-motion-index="1">
+                <span class="motion-step-top">
+                  <span class="motion-step-index">02 · ACTION</span>
+                  <h3>근거로 계획을 바꿉니다.</h3>
+                </span>
+                <span class="motion-step-copy">
+                  <strong>행동하면서 판단을 갱신합니다.</strong>
+                  <span>
+                    주도성은 행동의 양이 아니라 목표, 자료, 피드백을 근거로 계획을 조절할
+                    수 있는 힘으로 드러납니다.
+                  </span>
+                </span>
+              </button>
+              <button class="motion-step" type="button" data-motion-index="2">
+                <span class="motion-step-top">
+                  <span class="motion-step-index">03 · REFLECTION</span>
+                  <h3>결과를 다음 선택으로 돌려보냅니다.</h3>
+                </span>
+                <span class="motion-step-copy">
+                  <strong>성찰이 순환을 다시 엽니다.</strong>
+                  <span>
+                    성공과 실패를 판정하는 대신 무엇이 달라졌는지 해석하고, 그 근거를 다음
+                    목표와 행동에 반영합니다.
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+          <div class="motion-support" aria-label="AAR 순환을 지탱하는 세 조건">
+            <div>
+              <span class="micro-label">Teacher Agency</span>
+              <strong>목표·자료·기준의 구조를 설계합니다.</strong>
+            </div>
+            <div>
+              <span class="micro-label">Co-agency</span>
+              <strong>의견·책임·결정을 함께 조정합니다.</strong>
+            </div>
+            <div>
+              <span class="micro-label">Evidence</span>
+              <strong>다음 수업으로 옮길 근거를 기록합니다.</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="study" id="condition-study" aria-labelledby="condition-title">
+        <div class="container">
+          <header class="study-heading">
+            <div class="study-index">
+              <p class="study-number">02</p>
+              <p class="section-label">Agency as Conditions</p>
+            </div>
+            <div class="study-title">
+              <h2 id="condition-title">학생보다 먼저 조건을 봅니다.</h2>
+            </div>
+            <p class="study-description">
+              네 영역에 마우스를 올리거나 키보드로 선택하면 학생 주도성을 가능하게 하는
+              조건과 교실에서 던질 질문이 나타납니다.
+            </p>
+          </header>
+
+          <div class="condition-layout">
+            <div class="condition-field" id="condition-field">
+              <button class="condition-button is-active" type="button" data-condition="structure">
+                <span class="condition-code">01 · Structure</span>
+                <strong>구조</strong>
+                <small>선택을 지탱합니다.</small>
+              </button>
+              <button class="condition-button" type="button" data-condition="authority">
+                <span class="condition-code">02 · Authority</span>
+                <strong>권한</strong>
+                <small>판단할 공간을 만듭니다.</small>
+              </button>
+              <button class="condition-button" type="button" data-condition="relation">
+                <span class="condition-code">03 · Relation</span>
+                <strong>관계</strong>
+                <small>공동의 책임을 만듭니다.</small>
+              </button>
+              <button class="condition-button" type="button" data-condition="record">
+                <span class="condition-code">04 · Record</span>
+                <strong>기록</strong>
+                <small>다음 실천으로 옮깁니다.</small>
+              </button>
+              <div class="condition-core" aria-hidden="true">
+                <span>STUDENT AGENCY</span>
+                <strong>학생 주도성</strong>
+                <small>개인의 성격이 아니라 조건 속에서 드러나는 판단과 조절의 과정입니다.</small>
+              </div>
+              <span class="condition-cursor" id="condition-cursor" aria-hidden="true"></span>
+            </div>
+            <article class="condition-detail" aria-live="polite">
+              <div class="condition-detail-heading">
+                <p class="micro-label" id="condition-label">01 · STRUCTURE</p>
+                <h3 id="condition-heading">자유보다 먼저 판단의 구조를 만듭니다.</h3>
+              </div>
+              <div class="condition-detail-copy">
+                <p id="condition-copy">
+                  선택은 빈 공간에서 생기지 않습니다. 목표와 기준, 사용할 수 있는 자료,
+                  피드백의 시점이 보일 때 학생은 알아서 하는 대신 근거를 가지고 판단합니다.
+                </p>
+                <p class="condition-question">
+                  <span>QUESTION IN CLASS</span>
+                  <strong id="condition-question">
+                    학생은 무엇을 선택하며, 그 선택을 판단할 기준을 알고 있습니까?
+                  </strong>
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="study" id="compass-study" aria-labelledby="compass-title">
+        <div class="container">
+          <header class="study-heading">
+            <div class="study-index">
+              <p class="study-number">03</p>
+              <p class="section-label">Position Compass</p>
+            </div>
+            <div class="study-title">
+              <h2 id="compass-title">나침반은 정답보다 방향을 가리킵니다.</h2>
+            </div>
+            <p class="study-description">
+              네 방향은 연구소가 교실을 읽는 네 가지 관점입니다. 나침반이 이동하며 각
+              원칙과 실제로 관찰할 질문을 차례로 설명합니다.
+            </p>
+          </header>
+
+          <div class="compass-layout" id="compass-layout">
+            <div class="compass-stage">
+              <button
+                class="direction-button is-active"
+                type="button"
+                data-direction="structure"
+                data-angle="-45"
+              >
+                <span class="direction-code">N · 01</span>
+                <strong>구조</strong>
+              </button>
+              <button
+                class="direction-button"
+                type="button"
+                data-direction="authority"
+                data-angle="45"
+              >
+                <span class="direction-code">E · 02</span>
+                <strong>권한</strong>
+              </button>
+              <button
+                class="direction-button"
+                type="button"
+                data-direction="relation"
+                data-angle="135"
+              >
+                <span class="direction-code">S · 03</span>
+                <strong>관계</strong>
+              </button>
+              <button
+                class="direction-button"
+                type="button"
+                data-direction="record"
+                data-angle="225"
+              >
+                <span class="direction-code">W · 04</span>
+                <strong>기록</strong>
+              </button>
+              <div class="compass-dial" id="compass-dial" style="--angle: -45deg" aria-hidden="true">
+                <span class="compass-needle"></span>
+                <span class="compass-center"></span>
+              </div>
+            </div>
+
+            <article class="compass-detail" aria-live="polite">
+              <div class="compass-detail-top">
+                <p class="compass-position">
+                  <span id="compass-code">N · 01</span>
+                  <strong id="compass-concept">STRUCTURE</strong>
+                </p>
+                <h3 id="compass-heading">주도성은 방임이 아닙니다.</h3>
+                <p class="compass-detail-copy" id="compass-copy">
+                  선택지를 주지 않은 채 알아서 하라고 말하는 것은 자유가 아니라 방치입니다.
+                  구조가 먼저 있고, 그 안에서 선택이 생깁니다.
+                </p>
+              </div>
+              <p class="compass-question">
+                <span>OBSERVATION POINT</span>
+                <strong id="compass-question">
+                  학생이 선택할 범위와 판단할 기준이 함께 보입니까?
+                </strong>
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="lab-footer">
+      <div class="container footer-grid">
+        <p>
+          이론적 배경: OECD Learning Compass 2030 · 자기결정성 이론 · Priestley,
+          Biesta &amp; Robinson의 교사 주도성 생태학적 접근 · Bandura의 인간 행위주체성
+        </p>
+        <p>Our Position Interaction Lab · 2026.08.29</p>
+      </div>
+    </footer>
+
+    <script>
+      (() => {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const motionStage = document.getElementById("motion-stage");
+        const motionStatus = document.getElementById("motion-status");
+        const motionSteps = [...document.querySelectorAll("[data-motion-index]")];
+        const motionToggle = document.getElementById("motion-toggle");
+        const motionNames = ["예측", "행동", "성찰"];
+
+        const conditionField = document.getElementById("condition-field");
+        const conditionCursor = document.getElementById("condition-cursor");
+        const conditionButtons = [...document.querySelectorAll("[data-condition]")];
+        const conditionData = {
+          structure: {
+            label: "01 · STRUCTURE",
+            heading: "자유보다 먼저 판단의 구조를 만듭니다.",
+            copy: "선택은 빈 공간에서 생기지 않습니다. 목표와 기준, 사용할 수 있는 자료, 피드백의 시점이 보일 때 학생은 알아서 하는 대신 근거를 가지고 판단합니다.",
+            question: "학생은 무엇을 선택하며, 그 선택을 판단할 기준을 알고 있습니까?",
+          },
+          authority: {
+            label: "02 · AUTHORITY",
+            heading: "교사의 판단할 권한이 학생의 선택 공간을 만듭니다.",
+            copy: "학생 주도성은 교사가 물러날수록 커지는 것이 아닙니다. 교사가 교육과정과 시간, 자료와 피드백을 수업의 목표에 맞게 조정할 수 있어야 의미 있는 선택권을 설계할 수 있습니다.",
+            question: "교사는 이 수업의 목표에 맞게 순서와 방법을 다시 설계할 수 있습니까?",
+          },
+          relation: {
+            label: "03 · RELATION",
+            heading: "주도성은 서로의 판단을 바꾸는 관계에서 자랍니다.",
+            copy: "공동 주도성은 역할을 나누는 데서 끝나지 않습니다. 교사와 학생, 학생과 학생이 서로의 의견에 응답하고 결정과 책임을 조정할 때 개인의 선택이 공동의 방향과 연결됩니다.",
+            question: "누구의 의견이 결정에 반영되며, 그 결정은 다시 수정될 수 있습니까?",
+          },
+          record: {
+            label: "04 · RECORD",
+            heading: "기록은 한 번의 실천을 다시 가능한 조건으로 바꿉니다.",
+            copy: "좋은 장면을 칭찬하는 것만으로는 반복할 수 없습니다. 선택이 나타난 순간, 교사의 개입, 관계의 변화와 그 결과를 기록해야 다른 교실에서도 다시 살필 수 있는 조건이 됩니다.",
+            question: "이번 수업에서 무엇이 달라졌으며, 다음 선택에 남길 근거는 무엇입니까?",
+          },
+        };
+
+        const compassLayout = document.getElementById("compass-layout");
+        const compassDial = document.getElementById("compass-dial");
+        const directionButtons = [...document.querySelectorAll("[data-direction]")];
+        const directionOrder = ["structure", "authority", "relation", "record"];
+        const compassData = {
+          structure: {
+            code: "N · 01",
+            concept: "STRUCTURE",
+            heading: "주도성은 방임이 아닙니다.",
+            copy: "선택지를 주지 않은 채 알아서 하라고 말하는 것은 자유가 아니라 방치입니다. 구조가 먼저 있고, 그 안에서 선택이 생깁니다.",
+            question: "학생이 선택할 범위와 판단할 기준이 함께 보입니까?",
+          },
+          authority: {
+            code: "E · 02",
+            concept: "TEACHER AGENCY",
+            heading: "학생 주도성은 교사 주도성 위에서 자랍니다.",
+            copy: "자기 수업을 설계할 권한이 없는 교사는 학생에게 권한을 넘길 수 없습니다. 학생의 선택을 가능하게 하는 교사의 판단과 설계를 함께 봅니다.",
+            question: "교사는 학생의 판단을 돕도록 수업을 조정할 권한과 시간을 가집니까?",
+          },
+          relation: {
+            code: "S · 03",
+            concept: "CO-AGENCY",
+            heading: "주도성은 혼자 자라지 않습니다.",
+            copy: "주도성은 개인의 능력치가 아니라 관계에서 발생합니다. 교사와 학생, 학생과 학생 사이에서 서로의 선택과 책임을 조정하는 과정이 토대가 됩니다.",
+            question: "학생의 선택은 다른 사람의 의견과 공동의 목표를 만나고 있습니까?",
+          },
+          record: {
+            code: "W · 04",
+            concept: "REFLECTION",
+            heading: "기록되지 않은 실천은 반복되지 않습니다.",
+            copy: "좋은 수업은 이미 교실 안에 있습니다. 장면을 기록하고 조건을 분리해야 다음 수업과 다른 교실에서 다시 시도할 수 있습니다.",
+            question: "선택과 변화의 어떤 장면을 다음 수업의 근거로 남깁니까?",
+          },
+        };
+
+        let motionIndex = 0;
+        let compassIndex = 0;
+        let isAutoPlaying = !reducedMotion.matches;
+        let motionTimer;
+        let compassTimer;
+
+        function setMotion(index) {
+          motionIndex = index;
+          motionStage.style.setProperty("--stage", String(index));
+          motionStatus.textContent = `${String(index + 1).padStart(2, "0")} / 03 · ${motionNames[index]}`;
+          motionSteps.forEach((step, stepIndex) => {
+            step.classList.toggle("is-active", stepIndex === index);
+          });
+        }
+
+        function setCondition(key) {
+          const detail = conditionData[key];
+          document.getElementById("condition-label").textContent = detail.label;
+          document.getElementById("condition-heading").textContent = detail.heading;
+          document.getElementById("condition-copy").textContent = detail.copy;
+          document.getElementById("condition-question").textContent = detail.question;
+          conditionButtons.forEach((button) => {
+            button.classList.toggle("is-active", button.dataset.condition === key);
+          });
+        }
+
+        function setCompass(key) {
+          const detail = compassData[key];
+          const button = directionButtons.find((item) => item.dataset.direction === key);
+          compassIndex = directionOrder.indexOf(key);
+          compassDial.style.setProperty("--angle", `${button.dataset.angle}deg`);
+          document.getElementById("compass-code").textContent = detail.code;
+          document.getElementById("compass-concept").textContent = detail.concept;
+          document.getElementById("compass-heading").textContent = detail.heading;
+          document.getElementById("compass-copy").textContent = detail.copy;
+          document.getElementById("compass-question").textContent = detail.question;
+          directionButtons.forEach((item) => {
+            item.classList.toggle("is-active", item.dataset.direction === key);
+          });
+        }
+
+        function stopTimers() {
+          window.clearInterval(motionTimer);
+          window.clearInterval(compassTimer);
+        }
+
+        function startTimers() {
+          stopTimers();
+          if (!isAutoPlaying || reducedMotion.matches) return;
+          motionTimer = window.setInterval(() => {
+            setMotion((motionIndex + 1) % motionSteps.length);
+          }, 3200);
+          compassTimer = window.setInterval(() => {
+            setCompass(directionOrder[(compassIndex + 1) % directionOrder.length]);
+          }, 4400);
+        }
+
+        function syncToggle() {
+          motionToggle.textContent = isAutoPlaying
+            ? "자동 설명 멈추기"
+            : "자동 설명 시작하기";
+        }
+
+        motionSteps.forEach((step) => {
+          step.addEventListener("click", () => {
+            setMotion(Number(step.dataset.motionIndex));
+            startTimers();
+          });
+        });
+
+        conditionButtons.forEach((button) => {
+          const activate = () => setCondition(button.dataset.condition);
+          button.addEventListener("pointerenter", activate);
+          button.addEventListener("focus", activate);
+          button.addEventListener("click", activate);
+        });
+
+        conditionField.addEventListener("pointermove", (event) => {
+          if (event.pointerType === "touch") return;
+          const bounds = conditionField.getBoundingClientRect();
+          conditionCursor.style.left = `${event.clientX - bounds.left}px`;
+          conditionCursor.style.top = `${event.clientY - bounds.top}px`;
+          conditionField.classList.add("is-pointing");
+        });
+        conditionField.addEventListener("pointerleave", () => {
+          conditionField.classList.remove("is-pointing");
+        });
+
+        directionButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            setCompass(button.dataset.direction);
+            startTimers();
+          });
+          button.addEventListener("focus", () => setCompass(button.dataset.direction));
+        });
+
+        compassLayout.addEventListener("pointerenter", stopTimers);
+        compassLayout.addEventListener("pointerleave", startTimers);
+
+        motionToggle.addEventListener("click", () => {
+          isAutoPlaying = !isAutoPlaying;
+          syncToggle();
+          startTimers();
+        });
+
+        reducedMotion.addEventListener("change", () => {
+          if (reducedMotion.matches) isAutoPlaying = false;
+          syncToggle();
+          startTimers();
+        });
+
+        setMotion(0);
+        setCondition("structure");
+        setCompass("structure");
+        syncToggle();
+        startTimers();
+      })();
+    </script>
+  </body>
+</html>
