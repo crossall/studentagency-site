@@ -59,6 +59,27 @@
     revealElements.forEach((element) => revealObserver.observe(element));
   }
 
+  document.querySelectorAll("[data-random-case-cards]").forEach((container) => {
+    const cards = Array.from(container.querySelectorAll(".case-card"));
+    const order = cards.map((_, index) => index);
+    for (let index = order.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      [order[index], order[randomIndex]] = [order[randomIndex], order[index]];
+    }
+
+    const requestedCount = Number(container.dataset.visibleCount ?? 2);
+    const visibleCount = Math.max(1, Math.min(requestedCount, cards.length));
+    const selected = new Map(
+      order.slice(0, visibleCount).map((cardIndex, rank) => [cardIndex, rank]),
+    );
+    cards.forEach((card, cardIndex) => {
+      const rank = selected.get(cardIndex);
+      card.hidden = rank === undefined;
+      if (rank !== undefined) card.dataset.revealOrder = String(rank + 1);
+    });
+    container.dataset.randomized = "true";
+  });
+
   const heroVideo = document.querySelector(".hero-video");
   const heroVideoToggle = document.querySelector(".hero-video-toggle");
   const heroReelIndex = document.querySelector(".hero-reel-index");
