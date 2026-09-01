@@ -1,4 +1,5 @@
 (() => {
+  const inquiryEndpoint = "https://script.google.com/macros/s/AKfycbyH_JkpdIkuzb69kfCT_anhbnRst7CWN5_f_I5kJJ5xIgd6SxIS5b3CPdkTHVrLbtVLwQ/exec";
   const root = document.documentElement;
   const storedTheme = localStorage.getItem("judoseong-theme");
   const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches
@@ -244,7 +245,7 @@
     field.addEventListener("change", () => showError(field, validationMessage(field)));
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     let firstInvalid = null;
     fields.forEach((field) => {
@@ -264,6 +265,47 @@
       firstInvalid.focus();
       return;
     }
-    status.textContent = "문의 전송 기능을 준비 중입니다. 메일 백엔드가 연결되면 이 양식에서 바로 문의할 수 있습니다.";
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalLabel = submitButton?.textContent ?? "문의 보내기";
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "문의 보내는 중";
+    }
+    form.setAttribute("aria-busy", "true");
+    status.textContent = "문의를 보내고 있습니다.";
+
+    try {
+      const body = new URLSearchParams();
+      fields.forEach((field) => {
+        body.set(field.name, field.name === "consent" ? String(field.checked) : field.value.trim());
+      });
+      body.set("website", form.elements.namedItem("website")?.value?.trim() ?? "");
+
+      const response = await fetch(inquiryEndpoint, {
+        method: "POST",
+        body,
+        credentials: "omit",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+      });
+      if (!response.ok) throw new Error("Inquiry collector did not respond.");
+      const result = await response.json();
+      if (!result.ok) throw new Error("Inquiry collector rejected the request.");
+
+      status.textContent = result.duplicate
+        ? "같은 문의가 이미 접수되어 다시 저장하지 않았습니다."
+        : "문의를 보냈습니다. 2영업일 안에 회신드립니다.";
+      form.reset();
+      fields.forEach((field) => showError(field, ""));
+    } catch (error) {
+      status.textContent = "문의를 보내지 못했습니다. 네트워크 연결을 확인하고 다시 시도합니다.";
+    } finally {
+      form.setAttribute("aria-busy", "false");
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalLabel;
+      }
+    }
   });
 })();
