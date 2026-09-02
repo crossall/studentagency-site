@@ -87,15 +87,20 @@
   const heroPlaylist = firstHeroSource
     ? [
         firstHeroSource,
+        new URL("hero-agency-02.mp4", firstHeroSource).href,
+        new URL("hero-agency-03.mp4", firstHeroSource).href,
+        new URL("hero-agency-04.mp4", firstHeroSource).href,
+        new URL("hero-agency-classroom.mp4", firstHeroSource).href,
         new URL("hero-agency-dialogue.mp4", firstHeroSource).href,
         new URL("hero-agency-reflection.mp4", firstHeroSource).href,
       ]
     : [];
+  const heroClipNumbers = ["01", "02", "03", "04", "06", "07", "08"];
   let heroClipIndex = 0;
 
   function syncHeroReelIndex() {
     if (heroReelIndex) {
-      heroReelIndex.textContent = String(heroClipIndex + 1).padStart(2, "0") + " / 03";
+      heroReelIndex.textContent = heroClipNumbers[heroClipIndex] + " / 08";
     }
   }
 
